@@ -17,14 +17,14 @@ services:
       VARNISH_CONFIG_FILE: /etc/varnish/default.vcl
     links:
       - zerotier
-      
+            
   zerotier:
     container_name: zerotier-alpine
     image: zyclonite/zerotier:${ZEROTIERVERSION}
     restart: unless-stopped
     volumes:
       - datazerotier:/var/lib/zerotier-one
-    privileged: true  
+    # privileged: true  
 
   # wp:
   #   container_name: wpapp
