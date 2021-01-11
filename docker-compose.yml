@@ -1,0 +1,56 @@
+---
+version: '3.6'
+services:
+  varnish:
+    container_name: varnish-alpine
+    image: varnish-alpine-docker:${VARNISHVERSION}
+    restart: unless-stopped
+    ports:
+      - 80:80    
+    volumes:
+      - ./conf/varnish/default.vcl:/etc/varnish/default.vcl
+      - datavarnish:/etc/varnish/
+    environment:
+      VARNISH_BACKEND_ADDRESS: ${VARNISH_BACKEND_ADDRESS}
+      VARNISH_BACKEND_PORT: ${VARNISH_BACKEND_PORT}
+      VARNISH_MEMORY: ${VARNISH_MEMORY}
+      VARNISH_CONFIG_FILE: /etc/varnish/default.vcl
+    links:
+      - zerotier
+      
+  zerotier:
+    container_name: zerotier-alpine
+    image: zyclonite/zerotier:${ZEROTIERVERSION}
+    restart: unless-stopped
+    volumes:
+      - datazerotier:/var/lib/zerotier-one
+    privileged: true  
+
+  # wp:
+  #   container_name: wpapp
+  #   image: wordpress:${WPVERSION}
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./conf/php.ini:/usr/local/etc/php/conf.d/custom.ini
+  #     - datawp:/var/www/html
+  #   depends_on:
+  #     - sqlwp
+  #   environment:
+  #     WORDPRESS_DB_HOST: sqlwp
+  #     WORDPRESS_DB_USER: ${MYSQLUSER}
+  #     WORDPRESS_DB_PASSWORD: ${MYSQLPASSWORD}
+  #     WORDPRESS_DB_NAME: ${MYSQLDB}
+  #     WORDPRESS_TABLE_PREFIX: ${MYSQLTABLEPREFIX}
+
+  # redis:
+  #   container_name: redis
+  #   image: redis:${REDISVERSION}
+  #   restart: unless-stopped
+  #   volumes:
+  #     - dataredis:/data
+
+volumes:
+  datavarnish:
+  datazerotier:
+  # datawp:
+  # dataredis:
