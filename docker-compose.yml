@@ -3,7 +3,7 @@ version: '3.6'
 services:
   varnish:
     container_name: varnish-alpine
-    image: varnish-alpine-docker:${VARNISHVERSION}
+    image: thiagofigueiro/varnish-alpine-docker:${VARNISHVERSION}
     restart: unless-stopped
     ports:
       - 80:80    
