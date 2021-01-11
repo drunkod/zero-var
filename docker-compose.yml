@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
     volumes:
       - datazerotier:/var/lib/zerotier-one
-    # privileged: true  
+    privileged: true  
 
   # wp:
   #   container_name: wpapp
